@@ -5,6 +5,7 @@ module.exports = {
 		browser: true,
 	},
 	rules: {
+		'max-len': ['error', 140],
 		'brace-style': ['error', 'stroustrup'],
 		'comma-dangle': ['error', 'never'],
 		'no-unused-vars': ['warn'],

@@ -8,13 +8,14 @@
 		"build": "tsc",
 		"prestart": "npm run build",
 		"start": "nodemon server.ts",
-        "start:dev": "nodemon server.ts",
+		"start:dev": "nodemon server.ts",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"format": "prettier --write \"**/*.+(js|jsx|ts|tsx|json|css|scss|md)\""
 	},
 	"author": "Unsignedmind",
 	"license": "MIT",
 	"dependencies": {
+		"dotenv": "^8.2.0",
 		"express": "^4.17.1"
 	},
 	"devDependencies": {

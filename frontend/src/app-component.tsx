@@ -4,7 +4,7 @@ import FooterComponent from './components/footer-component';
 import { Container } from 'react-bootstrap';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import HomeScreen from './screens/home-screen';
-import './app-component.scss'
+import './app-component.scss';
 import ProductScreen from './screens/product-screen';
 
 /**
@@ -12,18 +12,18 @@ import ProductScreen from './screens/product-screen';
  * @constructor
  */
 function AppComponent() {
-  return (
-    <Router>
-      <HeaderComponent />
-      <main className='app__page-indentation'>
-        <Container>
-          <Route path="/" component={HomeScreen} exact/>
-          <Route path="/product/:id" component={ProductScreen}/>
-        </Container>
-      </main>
-      <FooterComponent />
-    </Router>
-  );
+	return (
+		<Router>
+			<HeaderComponent />
+			<main className='app__page-indentation'>
+				<Container>
+					<Route path='/' component={HomeScreen} exact />
+					<Route path='/product/:id' component={ProductScreen} />
+				</Container>
+			</main>
+			<FooterComponent />
+		</Router>
+	);
 }
 
 export default AppComponent;
