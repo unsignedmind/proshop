@@ -1,0 +1,11 @@
+@import '../../../styles/meta/_index';
+
+.product {
+  &__title {
+    font-weight: bold;
+  }
+
+  &__rating {
+    margin-bottom: rem-calc(5px);
+  }
+}
