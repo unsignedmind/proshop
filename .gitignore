@@ -10,10 +10,12 @@ node_modules/
 /coverage
 
 # production
+backend/build
 /build
 /dist
 
 # misc
+./frontend/scripts/get-mongoose-types.js
 .idea
 .idea/
 .DS_Store
