@@ -1,4 +1,14 @@
-
+Project created with instructions from the MERN eCommerce course by Brad Traversy (Traversy Media). 
+The project was not created entirely according to the instructions of the course. The difference:
+ * is that typscript is used on the frontend and the backend.
+ * linters are configured
+ * SCSS is used
+ * naming convention different
+ * file names differ
+ * the Redux setup is different
+ * I did not finish the course yet
+ 
+Course Repo: https://github.com/bradtraversy/proshop_mern
 
 ## Install
 
