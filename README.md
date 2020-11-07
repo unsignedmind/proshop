@@ -1,3 +1,4 @@
+# ProSop
 Project created with instructions from the MERN eCommerce course by Brad Traversy (Traversy Media). 
 The project was not created entirely according to the instructions of the course. The difference:
  * is that typscript is used on the frontend and the backend.
@@ -17,7 +18,7 @@ Course Repo: https://github.com/bradtraversy/proshop_mern
 GraphQl not setup in the backend
 ~~npm run codegen~~
 
-#env 
+# env 
 add .env file in /backend with the following keys
 ````
 NODE_ENV=development
@@ -38,7 +39,7 @@ Typescript based WebShop written in Typescript with Redux State Management
 # Redux Setup
 This setup aims to remove as much boilerplate code as possible.
 
-This redux setup consists of the following components:
+The redux setup consists of the following components:
 * Generated Actions (custom actions possible)
 * State Merger (custom business logic when saving to state)
 * Reducer (1 line reducer)
@@ -51,11 +52,10 @@ This creator is stored in ``src/state/utils``. To Create a action you need 3 thi
 * ActionType Enum
 * Payload
 
-The StateModel can be imported from the reducer file. The ActionType Enum from the Actions file. Both are located und ``src/state/reducers/REACT_COMPONENTNAME``.
+The StateModel can be imported from the reducer file. The ActionType Enum from the Actions file. Both are located under ``src/state/reducers/REACT_COMPONENTNAME``.
 
 ### Use action generator
-The payload is type checked. It has a Partial<T> interface of given state model. With the generic creator there are no extra action defintions necessary. Define the attributes which changed in the call. The constructor of the generic creator has a optinal 4th parameter which is a boolean. When set to true then the action loads a custom state merger which is intended to hold some business logic.
-Read more about that under **State Merger**.
+The payload is type checked. It has a Partial<T> interface of given state model. With the generic creator there are no extra action defintions necessary. Define the attributes which changed in the call. The constructor of the generic creator has a optinal 4th parameter which is a boolean. When set to true then the action loads a custom state merger which is intended to hold some business logic added by the developer. Read more about that under **State Merger**.
 
 **Usage**
 ````typescript#
@@ -66,7 +66,7 @@ If the generated action reach their limitation then self written actions can be 
 
 **Usage**
 ````typescript
-export class ProductListRequest extends Action {
+export class ProductListRequestAction extends Action {
     public readonly type = ProductListActionTypes.REQUEST_START;
     public reducer = (state: ProductStateModel) => ({ ...state, loading: this.payload.loading });
 
@@ -77,9 +77,9 @@ export class ProductListRequest extends Action {
 ````
 
 ## State Merger
-What is this for? As the name says it merges states. The generated actions include the reducer already. By default the payload of the action overwrite the state. But as there could also be some business logic necessary then a custom merger is needed.
-These are stored in ``src/state/state-merger/``. 
-To create a new state merger frist add a new class in the ``state-merger`` file. They look like this:
+What is this for? As the name says it merges states. The generated actions include the reducer already. By default the payload of the action overwrites the state. But as there could also be some business logic necessary then a custom merger is needed.
+These are stored in `src/state/state-merger/`. 
+To create a new state merger frist add a new class in the `state-merger` file. They look like this:
 
 ````typescript
 export class ProductListRequestStartStateMerger extends StateMerger {
