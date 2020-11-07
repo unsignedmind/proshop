@@ -77,7 +77,7 @@ export class ProductListRequestAction extends Action {
 ````
 
 ## State Merger
-What is this for? As the name says it merges states. The generated actions include the reducer already. By default the payload of the action overwrites the state. But as there could also be some business logic necessary then a custom merger is needed.
+What is this for? As the name says it merges states. The generated actions include the reducer and the action class has a flag named useCustomStateMerger. If true then the reduce function of that action gets a state merger from the a map and runs the merge function.  By default the payload of the action overwrites the state. But as there could also be some business logic necessary then a custom merger is needed.
 These are stored in `src/state/state-merger/`. 
 To create a new state merger frist add a new class in the `state-merger` file. They look like this:
 
