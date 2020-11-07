@@ -1,19 +1,95 @@
 # React Apollo Client
 
-Typescript based react application that implements the apollo client
+Typescript based WebShop written in Typescript with Redux State Management
 
 ## Install
 
 `npm install`
 
-`npm run codegen`
+GraphQl not setup in the backend
+~~npm run codegen~~
 
 ## Run App
 
 `npm start`
 
 ---
+# Redux Setup
+This setup aims to remove as much boilerplate code as possible.
 
+This redux setup consists of the following components:
+* Generated Actions (custom actions possible)
+* State Merger (custom business logic when saving to state)
+* Reducer (1 line reducer)
+
+## Actions 
+
+### Generic action creator
+This creator is stored in ``src/state/utils``. To Create a action you need 3 things:
+* StateModel
+* ActionType Enum
+* Payload
+
+The StateModel can be imported from the reducer file. The ActionType Enum from the Actions file. Both are located und ``src/state/reducers/REACT_COMPONENTNAME``.
+
+### Use action generator
+The payload is type checked. It has a Partial<T> interface of given state model. With the generic creator there are no extra action defintions necessary. Define the attributes which changed in the call. The constructor of the generic creator has a optinal 4th parameter which is a boolean. When set to true then the action loads a custom state merger which is intended to hold some business logic.
+Read more about that under **State Merger**.
+
+**Usage**
+````typescript#
+dispatch(new genericAction<ProductStateModel>(ProductListActionTypes.REQUEST_START, { loading: true }), false);
+````  
+### Create custom actions
+If the generated action reach their limitation then self written actions can be added wit the template below. 
+
+**Usage**
+````typescript
+export class ProductListRequest extends Action {
+    public readonly type = ProductListActionTypes.REQUEST_START;
+    public reducer = (state: ProductStateModel) => ({ ...state, loading: this.payload.loading });
+
+    constructor(public payload: Pick<ProductStateModel, 'loading'>) {
+        super();
+    }
+}
+````
+
+## State Merger
+What is this for? As the name says it merges states. The generated actions include the reducer already. By default the payload of the action overwrite the state. But as there could also be some business logic necessary then a custom merger is needed.
+These are stored in ``src/state/state-merger/``. 
+To create a new state merger frist add a new class in the ``state-merger`` file. They look like this:
+
+````typescript
+export class ProductListRequestStartStateMerger extends StateMerger {
+	merge(state: ProductStateModel, payload: Partial<ProductStateModel>): Partial<ProductStateModel> {
+		return { ...state, products: payload.products, error: 'State merger says hello :)' };
+	}
+}
+````
+* The naming default convention is actionName-StateMerger.
+* The class needs to extend the StateMerger base class.
+* Implement the merge function and set the types to the StateModel
+* Payload must be wrapped in Partial<T>
+
+Optional
+* The return type is also wrapped in Partial<T> because otherwise typescript would complain about the undefined Partials adds. 
+
+The class must be added to the map ```state-merger-map``` afterwards.
+````typescript
+[ProductListActionTypes.REQUEST_START, new ProductListRequestStartStateMerger()]
+````
+Each entry is a array that consits of the ActionType Enum and a new instance of the state merger class
+
+## Reducer
+A universal reducer exists for all generated actions. It can also handle the custom actions.
+````typescript
+export const productListReducer = (state: ProductStateModel = defaultProductState, action: Action) => universalReducer(state, action);
+
+````
+
+
+---
 ## React Default Description
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

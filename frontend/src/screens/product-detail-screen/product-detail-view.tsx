@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { ProductDTO } from '../models/product-dto';
+import { ProductDTO } from '../../models/product-dto';
 import { Row, Col, Image, ListGroup, ListGroupItem, Button, Card } from 'react-bootstrap';
-import RatingComponent from '../components/rating-component/rating-component';
+import RatingView from '../../components/rating-component/rating-view';
 import { isNil } from 'lodash';
 import axios from 'axios';
 
@@ -10,7 +10,7 @@ type TParams = {
 	id: string;
 };
 
-const ProductScreen: React.FC<RouteComponentProps<TParams>> = ({ match }: RouteComponentProps<TParams>) => {
+const ProductDetailView: React.FC<RouteComponentProps<TParams>> = ({ match }: RouteComponentProps<TParams>) => {
 	const [product, setProduct] = useState<ProductDTO | undefined>(undefined);
 
 	useEffect(() => {
@@ -36,7 +36,7 @@ const ProductScreen: React.FC<RouteComponentProps<TParams>> = ({ match }: RouteC
 					<ListGroup variant='flush'>
 						<ListGroupItem>
 							<h3>{product?.name}</h3>
-							<RatingComponent value={product?.rating} text={`${product?.numReviews} reviews`} />
+							<RatingView value={product?.rating} text={`${product?.numReviews} reviews`} />
 						</ListGroupItem>
 						<ListGroupItem>Price: ${product?.price}</ListGroupItem>
 						<ListGroupItem>Description: ${product?.description}</ListGroupItem>
@@ -72,4 +72,4 @@ const ProductScreen: React.FC<RouteComponentProps<TParams>> = ({ match }: RouteC
 	);
 };
 
-export default ProductScreen;
+export default ProductDetailView;

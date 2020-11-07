@@ -1,5 +1,5 @@
 import React from 'react';
-import './rating-component.scss';
+import './rating-styles.scss';
 
 interface Props {
 	value: number;
@@ -9,7 +9,7 @@ interface Props {
 const MIN_STARS = 1;
 const MAX_STARS = 5;
 
-const RatingComponent: React.FC<Props> = ({ value, text }) => {
+const RatingView: React.FC<Props> = ({ value, text }) => {
 	const ratings = [];
 	for (let i = MIN_STARS; i <= MAX_STARS; i++) {
 		let cssClasses = `${value > i ? 'fas fa-star' : value >= i - 0.5 ? 'fas fa-star-half-alt' : 'far fa-star'}`;
@@ -28,4 +28,4 @@ const RatingComponent: React.FC<Props> = ({ value, text }) => {
 	);
 };
 
-export default RatingComponent;
+export default RatingView;
