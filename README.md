@@ -1,17 +1,28 @@
-# React Apollo Client
 
-Typescript based WebShop written in Typescript with Redux State Management
 
 ## Install
 
-`npm install`
+`npm install` in /frontend and /backend
 
 GraphQl not setup in the backend
 ~~npm run codegen~~
 
+#env 
+add .env file in /backend with the following keys
+````
+NODE_ENV=development
+PORT=8000
+MONGO_URI=
+````
+
 ## Run App
 
-`npm start`
+`npm start` in /frontend
+`npm start:dev`  in/backend
+
+# React Apollo Client
+
+Typescript based WebShop written in Typescript with Redux State Management
 
 ---
 # Redux Setup
