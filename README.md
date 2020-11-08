@@ -1,4 +1,4 @@
-# ProSop
+# ProShop
 Project created with instructions from the MERN eCommerce course by Brad Traversy (Traversy Media). 
 The project was not created entirely according to the instructions of the course. The difference:
  * is that typscript is used on the frontend and the backend.
