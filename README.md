@@ -40,9 +40,8 @@ Typescript based WebShop written in Typescript with Redux State Management
 This setup aims to remove as much boilerplate code as possible.
 
 The redux setup consists of the following components:
-* Generated Actions (custom actions possible)
-* State Merger (custom business logic when saving to state)
-* Reducer (1 line reducer)
+* Generic Actions (custom actions possible)
+* State Merger (merge of payload and state)
 
 ## State
 ```typescript
@@ -97,11 +96,11 @@ If the generated actions reach their limitations then self written actions can b
 
 **Usage**
 ```typescript
-export class ProductListRequestAction extends Action {
+export class SomeAction extends Action {
     public readonly type = SomeActionTypes.ActionName;
     public reducer = (state: AppStateModel) => ({ ...state, ...payload });
 
-    constructor(public payload: Pick<AppStateModel, 'name'>) {
+    constructor(public payload: Pick<SomeStateModel, 'someAttribute'>) {
         super();
     }
 }
@@ -152,7 +151,6 @@ Each entry is an array that consists of the ActionType Enum, and a new instance 
 A universal reducer exists for all generated actions. It can also handle the custom actions. Since the logic of the reducer is "outsourced" the original reducer is a one-liner. 
 ```typescript
 export const appStateReducer = (state: AppStateModel = defaultAppState, action: Action) => universalReducer(state, action);
-
 ```
 
 
