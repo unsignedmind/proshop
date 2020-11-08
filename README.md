@@ -44,22 +44,53 @@ The redux setup consists of the following components:
 * State Merger (custom business logic when saving to state)
 * Reducer (1 line reducer)
 
-## Actions 
+## State
+```typescript
+export interface State {
+	readonly name: StateName;
+}
 
+export enum StateName {
+	APP_STATE = 'appState',
+	PRODUCT_LIST_STATE = 'productListState',
+}
+
+export interface AppStateModel extends State {
+	[StateName.PRODUCT_LIST_STATE]: ProductListStateModel;
+}
+
+export const defaultAppState: AppStateModel = {
+	name: StateName.APP_STATE,
+	[StateName.PRODUCT_LIST_STATE]: defaultProductState,
+};
+
+export interface ProductListStateModel extends State {
+	products: Maybe<Array<ProductDTO>>;
+	loading: Maybe<boolean>;
+	error: Maybe<string>;
+}
+```
+Each state has a name. The names are stored in an enum. All states are part of the App state. The attributes of a state can be also be null or undefined(via Maybe type). This is because payloads are defined for each state as Partial<T> and would not pass the type check because the payload contains only the attributes that have changed.   
+
+## Actions 
 ### Generic action creator
-This creator is stored in `src/state/utils`. To Create a action you need 3 things:
+This creator is stored in `src/state/utils`. To Create an action you need 4 things:
 * StateModel
 * ActionType Enum
 * Payload
+* Name of the state or boolean
 
-The StateModel can be imported from the reducer file. The ActionType Enum from the Actions file. Both are located under `src/state/reducers/REACT_COMPONENTNAME`.
+The StateModel & ActionType Enum are stored in the component directory.
 
 ### Use action generator
-The payload is type checked. It has a Partial<T> interface of given state model. With the generic creator there are no extra action defintions necessary. Define the attributes which changed in the call. The constructor of the generic creator has a optional 4th parameter which is a boolean. When set to true then the action loads a custom state merger which is intended to hold some business logic added by the developer. Read more about that under **State Merger**.
+The payload is type checked. It has a Partial<T> interface of given state model. With the generic creator there are no extra action definitions necessary. Define the attributes which changed in the call.
+The constructor of the generic creator has 2 optional parameters. The stateName and a boolean value. 
+* useCustomStateMerger(boolean): When the boolean is set to true then the action loads a custom state merger which is intended to hold some business logic added by the developer. Read more about that under **State Merger**.
+* stateName(StateName): If the useCustomStateMerger flag is false or undefined the default merger is used. The default merger needs to know to which state the payload should be applied to.  
 
 **Usage**
-```typescript#
-dispatch(new genericAction<ProductStateModel>(ProductListActionTypes.REQUEST_START, { loading: true }), false);
+```typescript
+dispatch(new genericAction<ProductStateModel>(ProductListActionTypes.REQUEST_START, { loading: true }), StateName.PRODUCT_LIST_STATE, false);
 ``` 
 ### Create custom actions
 If the generated actions reach their limitations then self written actions can be added with the template below. 
@@ -67,46 +98,60 @@ If the generated actions reach their limitations then self written actions can b
 **Usage**
 ```typescript
 export class ProductListRequestAction extends Action {
-    public readonly type = ProductListActionTypes.REQUEST_START;
-    public reducer = (state: ProductStateModel) => ({ ...state, loading: this.payload.loading });
+    public readonly type = SomeActionTypes.ActionName;
+    public reducer = (state: AppStateModel) => ({ ...state, ...payload });
 
-    constructor(public payload: Pick<ProductStateModel, 'loading'>) {
+    constructor(public payload: Pick<AppStateModel, 'name'>) {
         super();
     }
 }
 ```
 
 ## State Merger
-What is this for? As the name says it merges states. The generated actions include the reducer and the action class has a flag named useCustomStateMerger. If true then the reduce function of that action gets a state merger from a map and runs the merge function.  By default the payload of the action overwrites the state. But as there could also be some business logic necessary then a custom merger is needed.
-These are stored in `src/state/state-merger/`. 
-To create a new state merger frist add a new class in the `state-merger` file. They look like this:
+What is this for? As the name says it merges states. 
+
+# Default Merger
+Based on the state name provided in the genericAction call the default state merger applies the payload to the correct state. That's possible because the state name equal the state attribute name in the app state model.
+
+# Custom Merger
+The generated actions include the reducer, and the action class has a flag named useCustomStateMerger. If true then the reduce function of that action gets a state merger from a map and runs the merge function. By default the payload of the action overwrites the state. But as there could also be some business logic necessary then a custom merger is needed. These are stored in `src/state/state-merger/`. 
+To create a new state merger first add a new class in the `state-merger` file. They look like this:
 
 ```typescript
-export class ProductListRequestStartStateMerger extends StateMerger {
-	merge(state: ProductStateModel, payload: Partial<ProductStateModel>): Partial<ProductStateModel> {
-		return { ...state, products: payload.products, error: 'State merger says hello :)' };
+export class ProductListRequestStartStateMerger extends DefaultStateMerger {
+	merge(state: AppStateModel, payload: Partial<ProductListStateModel>): AppStateModel {
+		return {
+			...state,
+			productListState: {
+				...state.productListState,
+				loading: payload.loading,
+				error: 'State Merger working',
+			},
+		};
 	}
 }
 ```
-* The naming default convention is actionName-StateMerger.
+Naming & Types
+* The naming default convention is actionNameStateMerger.
 * The class needs to extend the StateMerger base class.
 * Implement the merge function and set the types to the StateModel
 * Payload must be wrapped in Partial<T>
+* The return type  must be AppStateModel.
 
-Optional
-* The return type is also wrapped in Partial<T> because otherwise typescript would complain about the undefined Partials adds. 
+Merge
+* make sure to make a copy of the app state itself and a copy of the state you want to update to avoid "Common Mistake #2: Only making a shallow copy of one level"
 
 The class must be added to the map `state-merger-map`afterwards.
 
 ```typescript
 [ProductListActionTypes.REQUEST_START, new ProductListRequestStartStateMerger()]
 ```
-Each entry is a array that consits of the ActionType Enum and a new instance of the state merger class
+Each entry is an array that consists of the ActionType Enum, and a new instance of the state merger class
 
 ## Reducer
-A universal reducer exists for all generated actions. It can also handle the custom actions.
+A universal reducer exists for all generated actions. It can also handle the custom actions. Since the logic of the reducer is "outsourced" the original reducer is a one-liner. 
 ```typescript
-export const productListReducer = (state: ProductStateModel = defaultProductState, action: Action) => universalReducer(state, action);
+export const appStateReducer = (state: AppStateModel = defaultAppState, action: Action) => universalReducer(state, action);
 
 ```
 

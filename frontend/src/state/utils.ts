@@ -1,7 +1,12 @@
-import { customerStateMergerMap, DEFAULT_STATE_MERGER_KEY } from './stateMerger/state-merger-map';
+import { customerStateMergerMap, DEFAULT_STATE_MERGER_KEY } from './state-merger/state-merger-map';
 import { isNil } from 'lodash';
+import { AppStateModel } from './reducer';
+import { Maybe } from 'graphql/jsutils/Maybe';
+import { StateName } from './state-names';
 
-export interface State {}
+export interface State {
+	readonly name: StateName;
+}
 
 /**
  * type | name of action type and identifier for corresponding stateMerger
@@ -15,17 +20,18 @@ export abstract class Action {
 	protected constructor() {
 		return Object.assign({}, this);
 	}
-	abstract reducer(state: State, stateMergerKey?: string): State;
+	abstract reducer(state: State, stateMergerKey: string): AppStateModel;
 }
 
 /**
  * reducer | gets the stateMerger and runs it
  */
-export class genericAction<M> extends Action {
-	public reducer = (state: M, stateMergerKey: string) => {
+export class genericAction<M extends State> extends Action {
+	public stateName: Maybe<StateName>;
+	public reducer = (state: AppStateModel, stateMergerKey: string) => {
 		const stateMerger = customerStateMergerMap.get(stateMergerKey);
 		if (!isNil(stateMerger)) {
-			return stateMerger.merge(state, this.payload);
+			return stateMerger.merge(state, this.payload, this.stateName);
 		} else {
 			console.error(
 				`ERROR: useCustomStateMerger was set to true for ${stateMergerKey} but no StateMerger was created. Please add it to customerStateMergerMap`
@@ -38,10 +44,17 @@ export class genericAction<M> extends Action {
 	 *
 	 * @param type Name of the action. Is also Id for customStateMerges
 	 * @param payload changed data
+	 * @param stateName is used to tell the default merger which state it should apply the payload to
 	 * @param useCustomStateMerger (optional) If true then a custom merger will be called by the reducer
 	 */
-	constructor(public readonly type: string | undefined, public payload: Partial<M>, public useCustomStateMerger?: boolean) {
+	constructor(
+		public readonly type: string,
+		public payload: Partial<M>,
+		stateName?: Maybe<StateName>,
+		public useCustomStateMerger?: boolean
+	) {
 		super();
+		this.stateName = stateName;
 	}
 }
 
@@ -50,7 +63,7 @@ export class genericAction<M> extends Action {
  * @param state current state
  * @param action dispatched action as flat js object
  */
-export function universalReducer(state: State, action: Action) {
+export function universalReducer(state: AppStateModel, action: Action) {
 	const stateMergerKey = !isNil(action.useCustomStateMerger)
 		? !isNil(action.type)
 			? action.type

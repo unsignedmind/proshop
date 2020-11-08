@@ -1,5 +1,5 @@
-import { ProductListActionTypes } from '../reducers/product-list/product-list-actions';
-import { ProductListRequestStartStateMerger, StateMerger } from './state-merger';
+import { ProductListActionTypes } from '../../screens/product-list-screen/product-list-actions';
+import { ProductListRequestStartStateMerger, DefaultStateMerger } from './state-merger';
 
 /**
  * The action class has a flag named useCustomStateMerger. If true then the reduce function of that action
@@ -8,7 +8,7 @@ import { ProductListRequestStartStateMerger, StateMerger } from './state-merger'
 
 export const DEFAULT_STATE_MERGER_KEY = 'DEFAULT';
 
-export const customerStateMergerMap: Map<string, StateMerger> = new Map([
-	[DEFAULT_STATE_MERGER_KEY, new StateMerger()],
+export const customerStateMergerMap: Map<string, DefaultStateMerger> = new Map([
+	[DEFAULT_STATE_MERGER_KEY, new DefaultStateMerger()],
 	[ProductListActionTypes.REQUEST_START, new ProductListRequestStartStateMerger()],
 ]);
