@@ -106,13 +106,13 @@ export class SomeAction extends Action {
 }
 ```
 
-## State Merger
+# State Merger
 What is this for? As the name says it merges states. 
 
-# Default Merger
+## Default Merger
 Based on the state name provided in the genericAction call the default state merger applies the payload to the correct state. That's possible because the state name equal the state attribute name in the app state model.
 
-# Custom Merger
+## Custom Merger
 The generated actions include the reducer, and the action class has a flag named useCustomStateMerger. If true then the reduce function of that action gets a state merger from a map and runs the merge function. By default the payload of the action overwrites the state. But as there could also be some business logic necessary then a custom merger is needed. These are stored in `src/state/state-merger/`. 
 To create a new state merger first add a new class in the `state-merger` file. They look like this:
 
@@ -147,7 +147,7 @@ The class must be added to the map `state-merger-map`afterwards.
 ```
 Each entry is an array that consists of the ActionType Enum, and a new instance of the state merger class
 
-## Reducer
+# Reducer
 A universal reducer exists for all generated actions. It can also handle the custom actions. Since the logic of the reducer is "outsourced" the original reducer is a one-liner. 
 ```typescript
 export const appStateReducer = (state: AppStateModel = defaultAppState, action: Action) => universalReducer(state, action);
