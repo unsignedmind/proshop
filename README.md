@@ -70,7 +70,7 @@ export interface ProductListStateModel extends State {
 	error: Maybe<string>;
 }
 ```
-Each state has a name. The names are stored in an enum. All states are part of the App state. The attributes of a state can be also be null or undefined(via Maybe type). This is because payloads are defined for each state as Partial<T> and would not pass the type check because the payload contains only the attributes that have changed.   
+Each state has a name. The names are stored in an enum. All states are part of the App state. The attributes of a state can be also be null or undefined(via Maybe type). This is because payloads are defined for each state as `Partial<T>` and would not pass the type check because the payload contains only the attributes that have changed.   
 
 ## Actions 
 ### Generic action creator
@@ -83,7 +83,7 @@ This creator is stored in `src/state/utils`. To Create an action you need 4 thin
 The StateModel & ActionType Enum are stored in the component directory.
 
 ### Use action generator
-The payload is type checked. It has a Partial<T> interface of given state model. With the generic creator there are no extra action definitions necessary. Define the attributes which changed in the call.
+The payload is type checked. It has a `Partial<T>` interface of given state model. With the generic creator there are no extra action definitions necessary. Define the attributes which changed in the call.
 The constructor of the generic creator has 2 optional parameters. The stateName and a boolean value. 
 * useCustomStateMerger(boolean): When the boolean is set to true then the action loads a custom state merger which is intended to hold some business logic added by the developer. Read more about that under **State Merger**.
 * stateName(StateName): If the useCustomStateMerger flag is false or undefined the default merger is used. The default merger needs to know to which state the payload should be applied to.  
@@ -135,7 +135,7 @@ Naming & Types
 * The naming default convention is actionNameStateMerger.
 * The class needs to extend the StateMerger base class.
 * Implement the merge function and set the types to the StateModel
-* Payload must be wrapped in Partial<T>
+* Payload must be wrapped in `Partial<T>`
 * The return type  must be AppStateModel.
 
 Merge
