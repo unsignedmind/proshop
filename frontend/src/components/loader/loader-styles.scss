@@ -1,0 +1,21 @@
+@import '../../../styles/meta/_index';
+
+.loader {
+  &__spinner {
+    display: block;
+    width: rem-calc(100px);
+    height: rem-calc(100px);
+    margin: auto;
+  }
+
+  &__screen-reader-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+  }
+}

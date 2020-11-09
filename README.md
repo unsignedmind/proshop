@@ -64,12 +64,12 @@ export const defaultAppState: AppStateModel = {
 };
 
 export interface ProductListStateModel extends State {
-	products: Maybe<Array<ProductDTO>>;
-	loading: Maybe<boolean>;
-	error: Maybe<string>;
+	products: Array<ProductDTO>;
+	loading: boolean;
+	error: string;
 }
 ```
-Each state has a name. The names are stored in an enum. All states are part of the App state. The attributes of a state can be also be null or undefined(via Maybe type). This is because payloads are defined for each state as `Partial<T>` and would not pass the type check because the payload contains only the attributes that have changed.   
+Each state has a name. The names are stored in an enum. All states are part of the App state. 
 
 ## Actions 
 ### Generic action creator
@@ -123,7 +123,7 @@ export class ProductListRequestStartStateMerger extends DefaultStateMerger {
 			...state,
 			productListState: {
 				...state.productListState,
-				loading: payload.loading,
+				loading: payload.loading ? payload.loading : defaultProductListState.loading,
 				error: 'State Merger working',
 			},
 		};

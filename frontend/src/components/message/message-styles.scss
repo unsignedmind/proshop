@@ -1,0 +1,17 @@
+@import '../../../styles/meta/_index';
+
+.message {
+  width: 100%;
+  padding: rem-calc(10px);
+  border: rem-calc(1px) solid #999;
+
+  &--info {
+    background-color: $info-message;
+    border-color: $info-message-border;
+  }
+
+  &--error {
+    background-color: $error-message;
+    border-color: $error-message-border;
+  }
+}

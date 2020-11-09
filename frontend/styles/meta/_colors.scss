@@ -1,8 +1,53 @@
 // Main Colors
 $yellow: #f8e825;
 $orange: #f5a623;
+$red: #dd2222;
 
-// Palette
+// ** Palette **
+
+// Blue
+$blue-10: #eef3ff;
+$blue-20: #d4e0ff;
+$blue-30: #bbcdff;
+$blue-40: #a1bbff;
+$blue-50: #88a8ff;
+$blue-60: #6e96ff;
+$blue-70: #5583ff;
+$blue-80: #3b71ff;
+$blue-90: #225EFF;
+$blue-100: #084bff;
+$blue-110: #0040ed;
+$blue-120: #0039d4;
+$blue-130: #0033ba;
+$blue-140: #002ca1;
+$blue-150: #002587;
+$blue-160: #001e6e;
+$blue-170: #001754;
+$blue-180: #00103b;
+$blue-190: #000921;
+
+// Red
+$red-10: #fce9e9;
+$red-20: #f8d3d3;
+$red-30: #f5bdbd;
+$red-40: #f1a7a7;
+$red-50: #ee9191;
+$red-60: #eb7a7a;
+$red-70: #e76464;
+$red-80: #e44e4e;
+$red-90: #e03838;
+$red-100: #dd2222;
+$red-110: #c71f1f;
+$red-120: #b11b1b;
+$red-130: #9b1818;
+$red-140: #851414;
+$red-150: #6e1111;
+$red-160: #580e0e;
+$red-170: #420a0a;
+$red-180: #2c0707;
+$red-190: #160303;
+
+// Contrast
 $contrast-0: #000;
 $contrast-10: #0d0d0d;
 $contrast-20: #1a1a1a;
@@ -25,3 +70,8 @@ $contrast-190: #e6e6e6;
 $contrast-200: #f2f2f2;
 
 // Color Assignments
+$error-message: $red-20;
+$error-message-border: $red-50;
+
+$info-message: $blue-20;
+$info-message-border: $blue-50;

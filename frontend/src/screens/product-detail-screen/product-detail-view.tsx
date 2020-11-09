@@ -1,29 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { ProductDTO } from '../../models/product-dto';
-import { Row, Col, Image, ListGroup, ListGroupItem, Button, Card } from 'react-bootstrap';
+import { Button, Card, Col, Image, ListGroup, ListGroupItem, Row } from 'react-bootstrap';
 import RatingView from '../../components/rating-component/rating-view';
 import { isNil } from 'lodash';
-import axios from 'axios';
+import { getProduct } from './product-detail-controller';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../state/reducer';
+import { StateName } from '../../state/state-names';
+import LoaderView from '../../components/loader/loader-view';
+import MessageView from '../../components/message/message-view';
 
 type TParams = {
 	id: string;
 };
 
 const ProductDetailView: React.FC<RouteComponentProps<TParams>> = ({ match }: RouteComponentProps<TParams>) => {
-	const [product, setProduct] = useState<ProductDTO | undefined>(undefined);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		const fetchProduct = async () => {
-			const { data } = await axios.get(`/api/products/${match.params?.id}`);
-			setProduct(data);
-		};
-		fetchProduct();
-	}, [match]);
+		dispatch(getProduct(match?.params?.id));
+	}, [dispatch, match]);
 
-	// let product: ProductDTO | undefined = products.find((product) => product?._id === match?.params?.id);
+	const { loading, error, product } = useSelector((state: RootState) => state.appState[StateName.PRODUCT_DETAIL_STATE]);
 
-	return !isNil(product) ? (
+	return loading ? (
+		<LoaderView />
+	) : error ? (
+		<MessageView variant='message--error' message={error} />
+	) : !isNil(product) ? (
 		<>
 			<Link to={'/'} className={'btn btn-light my-3'}>
 				Go Back

@@ -1,3 +1,6 @@
+import { ReviewDTO } from './review-dto';
+
+// @todo add timestamp fields
 export interface ProductDTO {
 	_id: string;
 	name: string;
@@ -9,4 +12,5 @@ export interface ProductDTO {
 	countInStock: number;
 	rating: number;
 	numReviews: number;
+	reviews: Array<ReviewDTO>;
 }

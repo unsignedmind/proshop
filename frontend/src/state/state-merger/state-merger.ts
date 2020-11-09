@@ -1,5 +1,5 @@
 import { State } from '../utils';
-import { ProductListStateModel } from '../../screens/product-list-screen/product-list-state';
+import { defaultProductListState, ProductListStateModel } from '../../screens/product-list-screen/product-list-state';
 import { AppStateModel } from '../reducer';
 import { Maybe } from 'graphql/jsutils/Maybe';
 import { isNil } from 'lodash';
@@ -19,6 +19,7 @@ export class DefaultStateMerger implements IStateMerger {
 				return { ...state, ...payload };
 			} else {
 				const newAppState: AppStateModel = { ...state };
+				// @ts-ignore
 				newAppState[stateName] = { ...newAppState[stateName], ...payload };
 				return newAppState;
 			}
@@ -37,7 +38,7 @@ export class ProductListRequestStartStateMerger extends DefaultStateMerger {
 			...state,
 			productListState: {
 				...state.productListState,
-				loading: payload.loading,
+				loading: payload.loading ? payload.loading : defaultProductListState.loading,
 				error: 'State Merger working',
 			},
 		};
