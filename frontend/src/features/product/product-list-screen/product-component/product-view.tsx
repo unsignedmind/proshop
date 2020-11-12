@@ -1,8 +1,8 @@
 import React from 'react';
 import './product-styles.scss';
 import { Card } from 'react-bootstrap';
-import { ProductDTO } from '../../models/product-dto';
-import RatingView from '../rating-component/rating-view';
+import { ProductDTO } from '../../../../models/product-dto';
+import RatingView from '../../../../widgets/rating-component/rating-view';
 import { Link } from 'react-router-dom';
 
 interface Props {

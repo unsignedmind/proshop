@@ -1,10 +1,10 @@
 import axios, { AxiosResponse } from 'axios';
 import { isNil } from 'lodash';
-import { ProductDTO } from '../../models/product-dto';
-import { genericAction } from '../../state/utils';
-import { StateName } from '../../state/state-names';
-import { ProductDetailStateModel } from './product-detail-state';
 import { ProductDetailActionTypes } from './product-detail-actions';
+import { genericAction } from '../../../state/utils';
+import { StateName } from '../../../state/state-names';
+import { ProductDTO } from '../../../models/product-dto';
+import { ProductDetailStateModel } from './product-detail-state';
 
 export const getProduct = (id: string) => async (dispatch: any) => {
 	try {

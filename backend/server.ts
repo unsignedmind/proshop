@@ -1,19 +1,19 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { connectDB } from './config/db';
-import productRoutes from './src/routes/product-routes';
 import { errorHandler, notFound } from './src/middleware/error-middleware';
+import { productRoutes } from './src/routes/product-routes';
+import { userRoutes } from './src/routes/user-routes';
 
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8000;
 connectDB();
 
-app.get('/', (req, res) => {
-	res.send('Express + TypeScript Server');
-});
+app.use(express.json());
 
 app.use('/api/products', productRoutes);
+app.use('/api/users', userRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

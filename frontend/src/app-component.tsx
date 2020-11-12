@@ -1,11 +1,12 @@
 import React from 'react';
-import HeaderComponent from './components/header-component';
-import FooterComponent from './components/footer-component';
+import HeaderComponent from './main/header-component';
+import FooterComponent from './main/footer-component';
 import { Container } from 'react-bootstrap';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import ProductListView from './screens/product-list-screen/product-list-view';
+import ProductListView from './features/product/product-list-screen/product-list-view';
 import './app-component.scss';
-import ProductDetailView from './screens/product-detail-screen/product-detail-view';
+import CartView from './features/cart/cart-component/cart-view';
+import ProductDetailView from './features/product/product-detail-screen/product-detail-view';
 
 /**
  * Entrypoint
@@ -19,6 +20,7 @@ function AppComponent() {
 				<Container>
 					<Route path='/' component={ProductListView} exact />
 					<Route path='/product/:id' component={ProductDetailView} />
+					<Route path='/cart/:id?' component={CartView} />
 				</Container>
 			</main>
 			<FooterComponent />

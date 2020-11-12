@@ -1,13 +1,13 @@
 import { Col, Row } from 'react-bootstrap';
-import { ProductDTO } from '../../models/product-dto';
+import { ProductDTO } from '../../../models/product-dto';
 import React, { useEffect } from 'react';
-import ProductView from '../../components/product-component/product-view';
+import ProductView from './product-component/product-view';
 import { useDispatch, useSelector } from 'react-redux';
 import { listProducts } from './product-list-controller';
-import { RootState } from '../../state/reducer';
-import LoaderView from '../../components/loader/loader-view';
-import MessageView from '../../components/message/message-view';
-import { StateName } from '../../state/state-names';
+import { RootState } from '../../../state/reducer';
+import LoaderView from '../../../widgets/loader/loader-view';
+import MessageView from '../../../widgets/message/message-view';
+import { StateName } from '../../../state/state-names';
 
 const ProductListView: React.FC<{}> = () => {
 	const dispatch = useDispatch();
@@ -25,7 +25,7 @@ const ProductListView: React.FC<{}> = () => {
 			{loading ? (
 				<LoaderView />
 			) : error ? (
-				<MessageView variant='message--error' message={error} />
+				<MessageView variant='message--error'>{error}</MessageView>
 			) : (
 				<Row>
 					{products?.map((product: ProductDTO) => (

@@ -1,4 +1,5 @@
-import { Schema, model } from 'mongoose';
+import { Document, Model, model, Types, Schema, Query } from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 const userSchema = new Schema(
 	{
@@ -26,6 +27,25 @@ const userSchema = new Schema(
 	}
 );
 
-const User = model('User', userSchema);
+export interface IUser extends Document {
+	name: string;
+	email: string;
+	password: string;
+	isAdmin: boolean;
+	updatedAt?: Date;
+	createdAt?: Date;
+}
+
+export interface IUserModel extends Model<IUser> {
+	matchPasswords(password: string, userPassword: string): any;
+}
+
+userSchema.statics = {
+	async matchPasswords(password: string, userPassword: string) {
+		return await bcrypt.compare(password, userPassword);
+	},
+};
+
+const User: IUserModel = model<IUser, IUserModel>('User', userSchema);
 
 export default User;

@@ -1,0 +1,18 @@
+@import '../../../styles/meta/index';
+
+.qty-selector {
+  &__button {
+    width: rem-calc(32px);
+    height: rem-calc(32px);
+    margin-left: rem-calc(7px);
+    font-size: rem-calc(20px);
+    font-weight: bold;
+    color: $contrast-0;
+    border: rem-calc(1px) solid $contrast-0;
+    background-color: $contrast-210;
+
+    &[disabled] {
+      opacity: 0.2;
+    }
+  }
+}

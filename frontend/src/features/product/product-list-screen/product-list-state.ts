@@ -1,6 +1,6 @@
-import { ProductDTO } from '../../models/product-dto';
-import { State } from '../../state/utils';
-import { StateName } from '../../state/state-names';
+import { ProductDTO } from '../../../models/product-dto';
+import { State } from '../../../state/utils';
+import { StateName } from '../../../state/state-names';
 
 export interface ProductListStateModel extends State {
 	products: Array<ProductDTO>;
