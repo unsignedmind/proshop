@@ -23,3 +23,13 @@ function extractFileName(filePath) {
 	const segments = filePath.split('/');
 	return segments[segments.length - 1];
 }
+
+/*
+ * TODO:
+ *  Remove Mongoose imports
+ *  Remove extends mongoose.Types.Subdocument
+ *  Exchange Types.DocumentArray with Array
+ *  Rename module "mongoose" to "BackendTypes"
+ *  PROBLEM: id is missing
+ *
+ * */
